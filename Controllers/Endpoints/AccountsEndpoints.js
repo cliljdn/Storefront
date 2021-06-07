@@ -27,4 +27,16 @@ router.post('/login/account', async (req, res, next) => {
      }
 })
 
+router.patch('/update/account', async (req, res, next) => {
+     try {
+          // let account = new AccountModel
+
+          let acc = await AccountModel.updateAccount(req.body)
+
+          res.status(200).json(acc)
+     } catch (error) {
+          next(error)
+     }
+})
+
 module.exports = router

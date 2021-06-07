@@ -1,6 +1,7 @@
 const AccountModel = require('../../Models/Schemas/AccountSchema')
 const bcrypt = require('bcrypt')
 const jwt = require('../../helpers/token/jwt')
+const mongoose = require('mongoose')
 
 module.exports = class Account {
      constructor(obj) {
@@ -48,5 +49,26 @@ module.exports = class Account {
                name: `${ifExist.account_type}-${ifExist._id}`,
                auth: true,
           }
+     }
+
+     static async updateAccount(obj) {
+          const ifExist = await AccountModel.findOne({ email: obj.email })
+
+          if (ifExist) throw new Error('Email Already Exist')
+
+          let decodeId = await jwt.verify(obj._id)
+
+          let objectID = mongoose.Types.ObjectId(decodeId.id)
+
+          console.log(obj)
+          delete obj._id
+          let userData = await AccountModel.findByIdAndUpdate(
+               { _id: objectID },
+               obj
+          )
+
+          console.log(userData)
+
+          return userData
      }
 }
