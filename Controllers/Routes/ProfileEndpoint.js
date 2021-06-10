@@ -2,10 +2,11 @@ const express = require('express')
 const Profile = require('../Classes/Profile')
 const router = express.Router()
 
-router.post('/profile/create', async (req, res, next) => {
-     //  const { firstname, lastname, contact_number, address, birthday, gender } =
-     //       req.body
+/* 
+EXPECTED FIELDS  { firstname, lastname, contact_number, address, birthday, gender,image } 
+*/
 
+router.post('/profile/create', async (req, res, next) => {
      try {
           const rawToken = req.headers['authorization']
 
@@ -18,9 +19,6 @@ router.post('/profile/create', async (req, res, next) => {
 })
 
 router.patch('/profile/update', async (req, res, next) => {
-     //  const { firstname, lastname, contact_number, address, birthday, gender } =
-     //       req.body
-
      try {
           const rawToken = req.headers['authorization']
 

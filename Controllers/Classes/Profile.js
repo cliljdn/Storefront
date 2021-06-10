@@ -11,7 +11,6 @@ module.exports = class Profile extends Account {
           const account = await this.getIdentifiers(decodedID)
 
           const profile = await ProfileModel.create(obj)
-          console.log(profile)
 
           account.profile = { ...profile }
           await account.save()
@@ -20,6 +19,11 @@ module.exports = class Profile extends Account {
      }
 
      static async updateProfile(obj, token) {
+          /*
+               EXPECTED PARAMETER RAW AUTHORIZATION (JWT) TOKEN, 
+               EXPECTED PROP OF OBJ (FIRSTNAME, LASTNAME, ADDRESS)
+          */
+
           const decodedID = await this.accountAuth(token)
 
           const account = await this.getIdentifiers(decodedID)

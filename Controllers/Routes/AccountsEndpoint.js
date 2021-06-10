@@ -4,10 +4,12 @@ const router = express.Router()
 
 /*
  POSSIBLE ACCOUNT TYPES: Customer, Seller, Admin
+
+
+ EXPECTED FIELDS {email password, account_type}
 */
 
 router.post('/account/register', async (req, res, next) => {
-     // const { email, password, account_type } = req.body
      try {
           await AccountModel.insertAccount(req.body)
 
