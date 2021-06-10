@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
 })
 
 //endpoints
-
 app.use('/api/v1', require('./Controllers/Endpoints/AccountsEndpoints'))
+app.use('/api/v1', require('./Controllers/Endpoints/ProfileEndpoints'))
 
 //middlewares
 const { ErrorHandler, notFound } = require('./helpers/errors/Errorhandler')

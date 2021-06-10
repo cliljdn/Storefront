@@ -13,6 +13,11 @@ const schema = new Schema({
           enum: ['Male', 'Female'],
           default: '',
      },
+
+     image: {
+          type: Buffer,
+          content_type: String,
+     },
 })
 
 module.exports = mongoose.model(collectionNames.Profile, schema)

@@ -4,31 +4,18 @@ const jwt = require('../../helpers/token/jwt')
 const mongoose = require('mongoose')
 
 module.exports = class Account {
-     constructor(obj) {
-          Object.keys(obj).map((k) => (this[k] = obj[k]))
-     }
-
      //getters
-     get getObjConstructor() {
-          return {
-               ...this,
-          }
-     }
 
      //setters
 
      //static methods
-     static listAccounts() {
-          return AccountModel.find({})
-     }
-
      static async insertAccount(obj) {
           const ifExist = await AccountModel.findOne({ email: obj.email })
-
-          if (!ifExist) throw new Error('Email Already Exist')
+          if (ifExist) throw new Error('Email Already Exist')
 
           obj.password = await bcrypt.hashSync(obj.password, 10)
-          AccountModel.create(obj)
+
+          return await AccountModel.create(obj)
      }
 
      static async loginUser(obj) {
@@ -51,24 +38,34 @@ module.exports = class Account {
           }
      }
 
-     static async updateAccount(obj) {
+     static async updateAccount(obj, token) {
+          let decodedToken = await this.decodeToken(token)
+
           const ifExist = await AccountModel.findOne({ email: obj.email })
 
           if (ifExist) throw new Error('Email Already Exist')
 
-          let decodeId = await jwt.verify(obj._id)
+          let objectID = mongoose.Types.ObjectId(decodedToken)
 
-          let objectID = mongoose.Types.ObjectId(decodeId.id)
+          if ('password' in obj) {
+               obj.password = await bcrypt.hashSync(obj.password, 10)
+          }
 
-          console.log(obj)
-          delete obj._id
-          let userData = await AccountModel.findByIdAndUpdate(
-               { _id: objectID },
-               obj
-          )
-
-          console.log(userData)
+          let userData = await AccountModel.updateOne({ _id: objectID }, obj)
 
           return userData
+     }
+
+     static async decodeToken(token) {
+          const auth = token
+          if (!auth) throw new Error('No Token Provided')
+
+          const { id } = await jwt.verify(auth)
+
+          if (id) return id
+     }
+
+     static async getAccount(id) {
+          return await AccountModel.findById(id).populate('profile')
      }
 }

@@ -11,7 +11,7 @@ const schema = new Schema(
      {
           email: dataType,
           password: dataType,
-          account_type: dataType,
+          account_type: { ...dataType, enum: ['Customer', 'Seller', 'Admin'] },
           profile: {
                type: mongoose.Schema.Types.ObjectId,
                ref: collectionNames.Profile,
