@@ -5,14 +5,6 @@ const Account = require('./Account')
 module.exports = class Profile extends Account {
      //STATIC METHODS
 
-     static async accountAuth(token) {
-          return await Account.decodeToken(token)
-     }
-
-     static async getIdentifiers(id) {
-          return await Profile.getAccount(id)
-     }
-
      static async createProfile(obj, token) {
           const decodedID = await this.accountAuth(token)
 
@@ -32,11 +24,23 @@ module.exports = class Profile extends Account {
 
           const account = await this.getIdentifiers(decodedID)
 
-          await ProfileModel.updateOne(
-               { _id: account.profile._id },
-               obj
-          ).populate('profile')
+          await ProfileModel.updateOne({ _id: account.profile._id }, obj)
 
           return await this.getIdentifiers(decodedID)
+     }
+
+     //INHERITS PARENT (ACCOUNT) METHOD
+     static async accountAuth(token) {
+          /*
+               EXPECTED PARAMETER RAW AUTHORIZATION (JWT) TOKEN
+          */
+          return await Profile.decodeToken(token)
+     }
+
+     static async getIdentifiers(id) {
+          /*
+               EXPECTED PARAMETER VERIFIED JWT ID
+          */
+          return await Profile.getAccount(id)
      }
 }

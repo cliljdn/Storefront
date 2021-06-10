@@ -1,7 +1,3 @@
-const AccountModel = require('../Schemas/AccountSchema')
-const ProfileModel = require('../Schemas/ProfileSchema')
-
-module.exports = {
-     Accounts: AccountModel,
-     Profile: ProfileModel,
+module.exports = () => {
+     require('../Schemas/ProfileSchema'), require('../Schemas/AccountSchema')
 }

@@ -15,13 +15,14 @@ app.get('/', (req, res) => {
 })
 
 //endpoints
-app.use('/api/v1', require('./Controllers/Endpoints/AccountsEndpoints'))
-app.use('/api/v1', require('./Controllers/Endpoints/ProfileEndpoints'))
+app.use('/api/v1', require('./Controllers/Routes/AccountsEndpoint'))
+app.use('/api/v1', require('./Controllers/Routes/ProfileEndpoint'))
 
 //middlewares
 const { ErrorHandler, notFound } = require('./helpers/errors/Errorhandler')
-
 app.use(ErrorHandler)
 app.use(notFound)
+
+//server port
 const PORT = process.env.SERVER_PORT || 3500
 app.listen(PORT, () => console.log(`app is running on port ${PORT}`))

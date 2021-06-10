@@ -19,22 +19,33 @@ module.exports = class Account {
      }
 
      static async loginUser(obj) {
-          const ifExist = await AccountModel.findOne({ email: obj.email })
+          const account = await AccountModel.findOne({
+               email: obj.email,
+          }).populate('profile')
 
-          if (!ifExist) throw new Error('Account Does not Exist')
+          if (!account) throw new Error('Account Does not Exist')
 
           let isPasswordCorrect = await bcrypt.compareSync(
                obj.password,
-               ifExist.password
+               account.password
           )
 
           if (!isPasswordCorrect) throw new Error('Wrong Password')
 
-          let token = await jwt.sign({ id: ifExist._id })
-          return {
-               token: token,
-               name: `${ifExist.account_type}-${ifExist._id}`,
-               auth: true,
+          let token = await jwt.sign({ id: account._id })
+          account.token = token
+
+          return this.getLoginIdentifier(account)
+     }
+
+     static getLoginIdentifier(obj) {
+          if (obj.account_type === 'Customer') {
+               return {
+                    token: obj.token,
+                    token_name: `${obj.account_type}-${obj._id}`,
+                    auth: true,
+                    profile: obj.profile ? obj.profile._doc : null,
+               }
           }
      }
 

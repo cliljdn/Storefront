@@ -16,6 +16,26 @@ const schema = new Schema(
                type: mongoose.Schema.Types.ObjectId,
                ref: collectionNames.Profile,
           },
+
+          cart: [
+               {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: collectionNames.Inventory,
+                    date_added: {
+                         currentTime: () => Math.floor(Date.now() / 1000),
+                    },
+               },
+          ],
+
+          transactions: [
+               {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: collectionNames.Inventory,
+                    date_bought: {
+                         currentTime: () => Math.floor(Date.now() / 1000),
+                    },
+               },
+          ],
      },
      {
           timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
