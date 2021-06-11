@@ -28,20 +28,39 @@ let data = [
      },
 ]
 
-exports.up = () =>
-     InventorySchema.insertMany(data)
-          .then(function () {
-               console.info('Inventory Seed Inserted')
-          })
-          .catch(function (e) {
-               console.error(e)
-          })
+const ifExist = data.map((k) => k.item_name)
 
-exports.down = () =>
-     InventorySchema.deleteMany({})
-          .then(function () {
-               console.info('Account Collection Rolledback')
-          })
-          .catch(function (e) {
-               console.error(e)
-          })
+exports.up = async () => {
+     let exists = await InventorySchema.find()
+          .where('item_name')
+          .in(ifExist)
+          .exec()
+
+     if (exists.length <= 0) {
+          let inserted = await InventorySchema.insertMany(data)
+          if (inserted) console.info('Inventory Seed Inserted')
+     } else {
+          console.log('Inventory is already on latest migration')
+     }
+}
+
+exports.down = async () => {
+     try {
+          let exists = await InventorySchema.find()
+               .where('item_name')
+               .in(ifExist)
+               .exec()
+
+          if (exists.length > 0) {
+               let deleted = await InventorySchema.deleteMany({})
+
+               if (deleted) console.log('Inventory Collection Rolledback')
+          } else {
+               console.log('Inventory is already on base migration')
+          }
+
+          //
+     } catch (error) {
+          console.error(error)
+     }
+}

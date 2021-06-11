@@ -22,20 +22,35 @@ let data = [
      },
 ]
 
-exports.up = () =>
-     AccountModel.insertMany(data)
-          .then(function () {
-               console.info('Account Seed Inserted')
-          })
-          .catch(function (e) {
-               console.log(e)
-          })
+const emails = data.map((k) => k.email)
 
-exports.down = () =>
-     AccountModel.deleteMany()
-          .then(function () {
-               console.info('Account Collection Rolledback')
-          })
-          .catch(function (e) {
-               console.log(e)
-          })
+exports.up = async () => {
+     try {
+          const exists = await AccountModel.where('email').in(emails).exec()
+
+          if (exists.length <= 0) {
+               let inserted = await AccountModel.insertMany(data)
+               if (inserted) console.info('Account Seed Inserted')
+          } else {
+               console.log('Account is already on latest migration')
+          }
+     } catch (error) {
+          console.error(error)
+     }
+}
+
+exports.down = async () => {
+     try {
+          let exists = await AccountModel.where('email').in(emails).exec()
+
+          if (exists.length > 0) {
+               let deleted = await AccountModel.deleteMany()
+
+               if (deleted) console.log('Account Collection Rolledback')
+          } else {
+               console.log('Account is already on base migration')
+          }
+     } catch (error) {
+          console.error(error)
+     }
+}
