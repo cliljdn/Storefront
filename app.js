@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 require('./Dependencies/Connection')
 
 const express = require('express')

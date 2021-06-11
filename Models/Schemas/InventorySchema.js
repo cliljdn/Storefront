@@ -11,7 +11,8 @@ const schema = new Schema(
      {
           item_name: dataType,
           item_description: dataType,
-          quantity: { type: Integer, require: true, default: 0 },
+          quantity: { type: Number, require: true, default: 0 },
+
           size: {
                type: String,
                default: null,
@@ -20,6 +21,7 @@ const schema = new Schema(
           image: {
                type: Buffer,
                content_type: String,
+               default: null,
           },
 
           onTransact: { type: Boolean, default: false },

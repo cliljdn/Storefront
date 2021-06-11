@@ -1,8 +1,10 @@
+require('dotenv').config()
+
 let mongoose = require('mongoose')
 require('../helpers/Constants/collectionNames')
 
-const server = 'localhost' // REPLACE WITH YOUR DB SERVER
-const database = 'storedb' // REPLACE WITH YOUR DB NAME
+const server = process.env.SERVER // REPLACE WITH YOUR DB SERVER
+const database = process.env.DATABASE // REPLACE WITH YOUR DB NAME
 
 // db models
 
