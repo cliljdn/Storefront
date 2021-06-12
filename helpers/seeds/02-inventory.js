@@ -38,9 +38,9 @@ exports.up = async () => {
 
      if (exists.length <= 0) {
           let inserted = await InventorySchema.insertMany(data)
-          if (inserted) console.info('Inventory Seed Inserted')
+          if (inserted) return true
      } else {
-          console.log('Inventory is already on latest migration')
+          return false
      }
 }
 
@@ -54,9 +54,9 @@ exports.down = async () => {
           if (exists.length > 0) {
                let deleted = await InventorySchema.deleteMany({})
 
-               if (deleted) console.log('Inventory Collection Rolledback')
+               if (deleted) return true
           } else {
-               console.log('Inventory is already on base migration')
+               return false
           }
 
           //

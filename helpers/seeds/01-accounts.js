@@ -30,9 +30,9 @@ exports.up = async () => {
 
           if (exists.length <= 0) {
                let inserted = await AccountModel.insertMany(data)
-               if (inserted) console.info('Account Seed Inserted')
+               if (inserted) return true
           } else {
-               console.log('Account is already on latest migration')
+               return false
           }
      } catch (error) {
           console.error(error)
@@ -46,9 +46,9 @@ exports.down = async () => {
           if (exists.length > 0) {
                let deleted = await AccountModel.deleteMany()
 
-               if (deleted) console.log('Account Collection Rolledback')
+               if (deleted) return true
           } else {
-               console.log('Account is already on base migration')
+               return false
           }
      } catch (error) {
           console.error(error)

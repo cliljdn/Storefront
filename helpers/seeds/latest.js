@@ -6,9 +6,16 @@ const inventory = require('./02-inventory')
 
 const seed = async () => {
      try {
-          await account.up()
-          await inventory.up()
-          process.exit()
+          const accUp = await account.up()
+          const invUp = await inventory.up()
+
+          if (accUp && invUp) {
+               console.log('Process run the latest migration')
+               process.exit()
+          } else {
+               console.log('Process already executed the latest migration')
+               process.exit()
+          }
      } catch (error) {
           console.log(error)
      }
