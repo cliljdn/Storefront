@@ -6,7 +6,7 @@ router.post('/inventory/create/item', async (req, res, next) => {
      try {
           const rawToken = req.headers['authorization']
 
-          const inv = await Inventory.additem(req.body, rawToken)
+          const inv = await Inventory.setItem(req.body, rawToken)
 
           if (inv) res.status(200).json('inserted')
      } catch (error) {
@@ -21,6 +21,18 @@ router.patch('/inventory/update/item', async (req, res, next) => {
           const updatedData = await Inventory.updateItem(req.body, rawToken)
 
           res.status(200).json(updatedData)
+     } catch (error) {
+          next(error)
+     }
+})
+
+router.get('/inventory/items', async (req, res, next) => {
+     try {
+          const rawToken = req.headers['authorization']
+
+          const items = await Inventory.getInventory(rawToken)
+
+          res.status(200).json(items)
      } catch (error) {
           next(error)
      }

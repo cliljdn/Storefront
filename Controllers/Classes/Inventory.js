@@ -5,7 +5,17 @@ const Account = require('./Account')
 const mongoose = require('mongoose')
 
 module.exports = class Inventory extends Account {
-     static async additem(obj, token) {
+     static async getInventory(token) {
+          const id = await this.decodeToken(token)
+
+          const inventoryList = await AccountModel.findById(id)
+               .populate('inventories')
+               .lean()
+
+          return inventoryList.inventories
+     }
+
+     static async setItem(obj, token) {
           const decodedToken = await this.decodeToken(token)
 
           const objectID = mongoose.Types.ObjectId(decodedToken)
@@ -26,7 +36,7 @@ module.exports = class Inventory extends Account {
      static async updateItem(obj, token) {
           Object.keys(obj).forEach((key) => obj[key] === '' && delete obj[key])
 
-          const decodedToken = await this.decodeToken(token)
+          await this.decodeToken(token)
 
           const objectID = mongoose.Types.ObjectId(obj.item_id)
 
