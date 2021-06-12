@@ -8,11 +8,13 @@ module.exports = class Inventory extends Account {
      static async getInventory(token) {
           const id = await this.decodeToken(token)
 
-          const inventoryList = await AccountModel.findById(id)
-               .populate('inventories')
+          const query = {}
+
+          const inventoryList = await InventoryModel.find(query)
+               .where('item_owner', id)
                .lean()
 
-          return inventoryList.inventories
+          return inventoryList
      }
 
      static async setItem(obj, token) {
