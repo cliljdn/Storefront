@@ -5,16 +5,21 @@ const Account = require('./Account')
 const mongoose = require('mongoose')
 
 module.exports = class Inventory extends Account {
-     static async getInventory(token) {
-          const id = await this.decodeToken(token)
+     static async getInventory(obj) {
+          const id = await this.decodeToken(obj.token)
 
           const query = {}
 
-          const inventoryList = await InventoryModel.find(query)
-               .where('item_owner', id)
-               .lean()
+          delete obj.token
+          if (obj.itemType) {
+               query['itemType'] = obj.itemType
+          }
 
-          return inventoryList
+          if (obj.search) {
+               query['item_name'] = { $regex: '.*' + obj.search + '.*' }
+          }
+
+          return await InventoryModel.find(query).where('item_owner', id).lean()
      }
 
      static async setItem(obj, token) {

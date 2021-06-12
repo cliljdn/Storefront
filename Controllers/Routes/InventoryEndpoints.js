@@ -29,8 +29,9 @@ router.patch('/inventory/update/item', async (req, res, next) => {
 router.get('/inventory/items', async (req, res, next) => {
      try {
           const rawToken = req.headers['authorization']
+          req.query.token = rawToken
 
-          const items = await Inventory.getInventory(rawToken)
+          const items = await Inventory.getInventory(req.query)
 
           res.status(200).json(items)
      } catch (error) {
