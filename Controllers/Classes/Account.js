@@ -46,6 +46,20 @@ module.exports = class Account {
                     auth: true,
                     profile: obj.profile ? obj.profile._doc : null,
                }
+          } else if (obj.account_type === 'Seller') {
+               return {
+                    token: obj.token,
+                    token_name: `${obj.account_type}-${obj._id}`,
+                    auth: true,
+                    profile: obj.profile ? obj.profile._doc : null,
+               }
+          } else {
+               return {
+                    token: obj.token,
+                    token_name: `${obj.account_type}-${obj._id}`,
+                    auth: true,
+                    profile: obj.profile ? obj.profile._doc : null,
+               }
           }
      }
 

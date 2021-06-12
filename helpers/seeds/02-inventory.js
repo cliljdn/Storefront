@@ -4,26 +4,32 @@ let password = bcrypt.hashSync('Password1', 10)
 
 let data = [
      {
-          item_name: 'kamote',
-          item_description: 'tnagina',
+          item_name: 'Nike Shoes',
+          item_description: 'L',
           quantity: 5,
-
+          price: 500,
+          itemType: 'Shoes',
+          expiredDate: '06-30-2021',
           onTransact: false,
      },
 
      {
-          item_name: 'sili',
+          item_name: 'Adidas Shirt',
           item_description: 'tnagina',
           quantity: 5,
-
+          price: 300,
+          itemType: 'Clothes',
+          expiredDate: '06-25-2021',
           onTransact: false,
      },
 
      {
-          item_name: 'gago',
+          item_name: 'LV Bag',
           item_description: 'tnagina',
           quantity: 5,
-
+          price: 400,
+          itemType: 'Bag',
+          expiredDate: '06-26-2021',
           onTransact: false,
      },
 ]
@@ -47,9 +53,6 @@ exports.up = async () => {
 exports.down = async () => {
      try {
           let exists = await InventorySchema.find()
-               .where('item_name')
-               .in(ifExist)
-               .exec()
 
           if (exists.length > 0) {
                let deleted = await InventorySchema.deleteMany({})

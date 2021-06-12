@@ -21,9 +21,7 @@ const schema = new Schema(
                {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: collectionNames.Inventory,
-                    date_added: {
-                         currentTime: () => Math.floor(Date.now() / 1000),
-                    },
+                    date_added: { type: Date, default: Date.now },
                },
           ],
 
@@ -31,15 +29,21 @@ const schema = new Schema(
                {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: collectionNames.Inventory,
-                    date_bought: {
-                         currentTime: () => Math.floor(Date.now() / 1000),
-                    },
+                    date_bought: { type: Date, default: Date.now },
+               },
+          ],
+
+          inventories: [
+               {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: collectionNames.Inventory,
+                    date_added: { type: Date, default: Date.now },
                },
           ],
      },
 
      {
-          timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
+          timestamps: true,
      }
 )
 

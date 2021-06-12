@@ -10,25 +10,36 @@ let dataType = {
 const schema = new Schema(
      {
           item_name: dataType,
-          item_description: dataType,
+          item_description: { type: String, default: null },
           quantity: { type: Number, require: true, default: 0 },
 
-          size: {
-               type: String,
-               default: null,
-          },
-
+          itemType: { type: String, default: null },
           image: {
                type: Buffer,
                content_type: String,
                default: null,
           },
 
+          expiredDate: {
+               type: Date,
+               default: null,
+          },
+
+          price: {
+               type: Number,
+               default: null,
+          },
+
           onTransact: { type: Boolean, default: false },
+
+          item_owner: {
+               type: mongoose.Schema.Types.ObjectId,
+               ref: collectionNames.Accounts,
+          },
      },
 
      {
-          timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
+          timestamps: true,
      }
 )
 

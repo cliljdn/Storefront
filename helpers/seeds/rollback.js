@@ -17,6 +17,7 @@ const rollback = async () => {
           }
      } catch (error) {
           console.error(error)
+          process.exit()
      }
 }
 

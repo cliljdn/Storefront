@@ -4,19 +4,19 @@ let password = bcrypt.hashSync('Password1', 10)
 
 let data = [
      {
-          email: 'hahaha@gmail.com',
+          email: 'calil@gmail.com',
           password: password,
           account_type: 'Customer',
      },
 
      {
-          email: 'hehe@gmail.com',
+          email: 'jaudian@gmail.com',
           password: password,
           account_type: 'Seller',
      },
 
      {
-          email: 'gaga@gmail.com',
+          email: 'christopher@gmail.com',
           password: password,
           account_type: 'Admin',
      },
@@ -41,7 +41,7 @@ exports.up = async () => {
 
 exports.down = async () => {
      try {
-          let exists = await AccountModel.where('email').in(emails).exec()
+          let exists = await AccountModel.find()
 
           if (exists.length > 0) {
                let deleted = await AccountModel.deleteMany()
