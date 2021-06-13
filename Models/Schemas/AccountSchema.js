@@ -21,6 +21,7 @@ const schema = new Schema(
                {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: collectionNames.Inventory,
+                    quantity: { type: Number, require: true },
                     date_added: { type: Date, default: Date.now },
                },
           ],

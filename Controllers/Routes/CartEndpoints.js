@@ -8,8 +8,9 @@ router.post('/cart/add', async (req, res, next) => {
 
           req.body.token = rawToken
 
-          console.log(req.body)
-          await Cart.addToCart(req.body)
+          const cart = await Cart.addToCart(req.body)
+
+          res.status(200).json(cart)
      } catch (error) {
           next(error)
      }

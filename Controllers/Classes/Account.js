@@ -99,6 +99,6 @@ module.exports = class Account {
      }
 
      static getObjectID(id) {
-          return mongoose.Types.ObjectId(decodedToken)
+          return mongoose.Types.ObjectId(id)
      }
 }
