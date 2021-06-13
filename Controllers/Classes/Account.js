@@ -31,6 +31,9 @@ module.exports = class Account {
           let token = await jwt.sign({ id: account._id })
           account.token = token
 
+          let output = await this.getAccountIdentifiers(account._id)
+          console.log(output)
+
           return this.getCredentials(account)
      }
 

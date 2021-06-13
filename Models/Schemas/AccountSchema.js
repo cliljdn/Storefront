@@ -21,8 +21,6 @@ const schema = new Schema(
                {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: collectionNames.Inventory,
-                    quantity: { type: Number, require: true },
-                    date_added: { type: Date, default: Date.now },
                },
           ],
 
@@ -30,7 +28,6 @@ const schema = new Schema(
                {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: collectionNames.Inventory,
-                    date_bought: { type: Date, default: Date.now },
                },
           ],
 
@@ -38,7 +35,6 @@ const schema = new Schema(
                {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: collectionNames.Inventory,
-                    date_added: { type: Date, default: Date.now },
                },
           ],
      },

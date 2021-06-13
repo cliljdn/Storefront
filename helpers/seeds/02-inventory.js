@@ -6,7 +6,7 @@ let data = [
      {
           item_name: 'Nike Shoes',
           item_description: 'L',
-          quantity: 5,
+          quantity: 100,
           price: 500,
           itemType: 'Shoes',
           expiredDate: '06-30-2021',
@@ -16,7 +16,7 @@ let data = [
      {
           item_name: 'Adidas Shirt',
           item_description: 'tnagina',
-          quantity: 5,
+          quantity: 100,
           price: 300,
           itemType: 'Clothes',
           expiredDate: '06-25-2021',
@@ -26,7 +26,7 @@ let data = [
      {
           item_name: 'LV Bag',
           item_description: 'tnagina',
-          quantity: 5,
+          quantity: 100,
           price: 400,
           itemType: 'Bag',
           expiredDate: '06-26-2021',
