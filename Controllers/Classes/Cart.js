@@ -27,10 +27,6 @@ module.exports = class Cart extends Inventory {
                     return {
                          _id: this.getObjectID(k._id),
                          cart_quantity: requested_items.quantity,
-                         date_added: new Date()
-                              .toLocaleString()
-                              .split(',')
-                              .find(() => true),
                     }
                })
           )
