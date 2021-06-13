@@ -35,10 +35,10 @@ module.exports = class Account {
           let token = await jwt.sign({ id: account._id })
           account.token = token
 
-          return this.getLoginIdentifier(account)
+          return this.getCredentials(account)
      }
 
-     static getLoginIdentifier(obj) {
+     static getCredentials(obj) {
           if (obj.account_type === 'Customer') {
                return {
                     token: obj.token,
@@ -90,7 +90,11 @@ module.exports = class Account {
           if (id) return id
      }
 
-     static async getAccount(id) {
+     static async getAccountIdentifiers(id) {
           return await AccountModel.findById(id).populate('profile')
+     }
+
+     static async getAccountById(id) {
+          return await AccountModel.findById(id)
      }
 }

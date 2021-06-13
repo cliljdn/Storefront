@@ -45,6 +45,6 @@ module.exports = class Profile extends Account {
           /*
                EXPECTED PARAMETER VERIFIED JWT ID
           */
-          return await Profile.getAccount(id)
+          return await Profile.getAccountIdentifiers(id)
      }
 }

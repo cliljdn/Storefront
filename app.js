@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1', require('./Controllers/Routes/AccountsEndpoint'))
 app.use('/api/v1', require('./Controllers/Routes/ProfileEndpoint'))
 app.use('/api/v1', require('./Controllers/Routes/InventoryEndpoints'))
+app.use('/api/v1', require('./Controllers/Routes/TransactionsEndpoints'))
 
 //middlewares
 const { ErrorHandler, notFound } = require('./helpers/errors/Errorhandler')

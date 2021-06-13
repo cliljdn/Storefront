@@ -5,6 +5,9 @@ const Account = require('./Account')
 const mongoose = require('mongoose')
 
 module.exports = class Inventory extends Account {
+     /* 
+          
+   */
      static async getInventory(obj) {
           const id = await this.decodeToken(obj.token)
 
@@ -21,6 +24,10 @@ module.exports = class Inventory extends Account {
 
           return await InventoryModel.find(query).where('item_owner', id).lean()
      }
+
+     /* 
+          SET ITEM === ADD ITEM
+     */
 
      static async setItem(obj, token) {
           const decodedToken = await this.decodeToken(token)
@@ -40,6 +47,10 @@ module.exports = class Inventory extends Account {
           return accOk && invOk ? true : false
      }
 
+     /* 
+          UPDATE ITEM INCLUDES:
+          SETTING THE QUANTITY AND RENAMING A SPECIFIC OBJECT
+     */
      static async updateItem(obj, token) {
           Object.keys(obj).forEach((key) => obj[key] === '' && delete obj[key])
 
