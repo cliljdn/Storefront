@@ -3,15 +3,13 @@ const AccountModel = require('../../Models/Schemas/AccountSchema')
 const InventoryModel = require('../../Models/Schemas/InventorySchema')
 const Account = require('./Account')
 const mongoose = require('mongoose')
-
+const query = {}
 module.exports = class Inventory extends Account {
      /* 
           
    */
-     static async getInventory(obj) {
+     static async getAccountInventories(obj) {
           const id = await this.decodeToken(obj.token)
-
-          const query = {}
 
           delete obj.token
           if (obj.itemType) {
@@ -25,6 +23,30 @@ module.exports = class Inventory extends Account {
           return await InventoryModel.find(query).where('item_owner', id).lean()
      }
 
+     static async getSales() {
+          try {
+               return await InventoryModel.find({ onTransact: true })
+          } catch (error) {
+               console.log(error)
+          }
+     }
+
+     static async findByIds(ids) {
+          try {
+               return await InventoryModel.find({ _id: { $in: ids } })
+          } catch (error) {
+               console.log(error)
+          }
+     }
+
+     static async findById(id) {
+          try {
+               return await InventoryModel.find({ _id: id })
+          } catch (error) {
+               console.log(error)
+          }
+     }
+
      /* 
           SET ITEM === ADD ITEM
      */
@@ -32,7 +54,7 @@ module.exports = class Inventory extends Account {
      static async setItem(obj, token) {
           const decodedToken = await this.decodeToken(token)
 
-          const objectID = mongoose.Types.ObjectId(decodedToken)
+          const objectID = this.getObjectID(decodedToken)
 
           const account = await AccountModel.findById(objectID)
 
@@ -56,7 +78,7 @@ module.exports = class Inventory extends Account {
 
           await this.decodeToken(token)
 
-          const objectID = mongoose.Types.ObjectId(obj.item_id)
+          const objectID = this.getObjectID(obj.item_id)
 
           const itemData = await InventoryModel.updateOne(
                { _id: objectID },

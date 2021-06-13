@@ -4,10 +4,6 @@ const jwt = require('../../helpers/token/jwt')
 const mongoose = require('mongoose')
 
 module.exports = class Account {
-     //getters
-
-     //setters
-
      //static methods
      static async insertAccount(obj) {
           const ifExist = await AccountModel.findOne({ email: obj.email })
@@ -70,7 +66,7 @@ module.exports = class Account {
 
           if (ifExist) throw new Error('Email Already Exist')
 
-          let objectID = mongoose.Types.ObjectId(decodedToken)
+          let objectID = this.getObjectID(decodedToken)
 
           if ('password' in obj) {
                obj.password = await bcrypt.hashSync(obj.password, 10)
@@ -91,10 +87,18 @@ module.exports = class Account {
      }
 
      static async getAccountIdentifiers(id) {
-          return await AccountModel.findById(id).populate('profile')
+          return await AccountModel.findById(id)
+               .populate('profile')
+               .populate('cart')
+               .populate('transactions')
+               .populate('inventories')
      }
 
      static async getAccountById(id) {
           return await AccountModel.findById(id)
+     }
+
+     static getObjectID(id) {
+          return mongoose.Types.ObjectId(decodedToken)
      }
 }
