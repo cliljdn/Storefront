@@ -18,6 +18,11 @@ const schema = new Schema({
           type: Buffer,
           content_type: String,
      },
+
+     account: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: collectionNames.Accounts,
+     },
 })
 
 module.exports = mongoose.model(collectionNames.Profile, schema)

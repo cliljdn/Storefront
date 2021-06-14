@@ -17,7 +17,7 @@ module.exports = class Account {
      static async loginUser(obj) {
           const account = await AccountModel.findOne({
                email: obj.email,
-          }).populate('profile')
+          })
 
           if (!account) throw new Error('Account Does not Exist')
 
@@ -30,9 +30,6 @@ module.exports = class Account {
 
           let token = await jwt.sign({ id: account._id })
           account.token = token
-
-          let output = await this.getAccountIdentifiers(account._id)
-          console.log(output)
 
           return this.getCredentials(account)
      }
@@ -87,14 +84,6 @@ module.exports = class Account {
           const { id } = await jwt.verify(auth)
 
           if (id) return id
-     }
-
-     static async getAccountIdentifiers(id) {
-          return await AccountModel.findById(id)
-               .populate('profile')
-               .populate('cart')
-               .populate('transactions')
-               .populate('inventories')
      }
 
      static async getAccountById(id) {

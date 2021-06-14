@@ -16,4 +16,18 @@ router.post('/cart/add', async (req, res, next) => {
      }
 })
 
+router.get('/cart/list', async (req, res, next) => {
+     try {
+          const rawToken = req.headers['authorization']
+
+          const decoded = await Cart.decodeToken(rawToken)
+
+          const cart = await Cart.getCart(decoded)
+
+          res.status(200).json(cart)
+     } catch (error) {
+          next(error)
+     }
+})
+
 module.exports = router

@@ -22,11 +22,9 @@ let data = [
      },
 ]
 
-const emails = data.map((k) => k.email)
-
 exports.up = async () => {
      try {
-          const exists = await AccountModel.where('email').in(emails).exec()
+          const exists = await AccountModel.find()
 
           if (exists.length <= 0) {
                let inserted = await AccountModel.insertMany(data)

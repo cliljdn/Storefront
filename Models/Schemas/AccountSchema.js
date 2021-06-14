@@ -16,39 +16,6 @@ const schema = new Schema(
                type: mongoose.Schema.Types.ObjectId,
                ref: collectionNames.Profile,
           },
-
-          cart: [
-               {
-                    ref: {
-                         type: mongoose.Schema.Types.ObjectId,
-                         ref: collectionNames.Inventory,
-                    },
-
-                    cart_quantity: {
-                         type: Number,
-                         require: true,
-                    },
-
-                    date_added: {
-                         type: Date,
-                         default: Date.now,
-                    },
-               },
-          ],
-
-          transactions: [
-               {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: collectionNames.Inventory,
-               },
-          ],
-
-          inventories: [
-               {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: collectionNames.Inventory,
-               },
-          ],
      },
 
      {

@@ -6,16 +6,17 @@ module.exports = class Profile extends Account {
      //STATIC METHODS
 
      static async createProfile(obj, token) {
-          const decodedID = await this.accountAuth(token)
+          const decodedID = await this.decodeToken(token)
 
-          const account = await this.getIdentifiers(decodedID)
+          const account = await this.getAccountById(decodedID)
 
+          console.log(account)
           const profile = await ProfileModel.create(obj)
 
-          account.profile = { ...profile }
-          await account.save()
+          profile.account = { ...account }
+          await profile.save()
 
-          return await this.getIdentifiers(decodedID)
+          return await this.getProfile(decodedID)
      }
 
      static async updateProfile(obj, token) {
@@ -24,27 +25,20 @@ module.exports = class Profile extends Account {
                EXPECTED PROP OF OBJ (FIRSTNAME, LASTNAME, ADDRESS)
           */
 
-          const decodedID = await this.accountAuth(token)
+          const decodedID = await this.decodeToken(token)
 
-          const account = await this.getIdentifiers(decodedID)
+          const profile = await this.getProfile(decodedID)
 
-          await ProfileModel.updateOne({ _id: account.profile._id }, obj)
+          await ProfileModel.updateOne({ _id: profile._id }, obj)
 
-          return await this.getIdentifiers(decodedID)
+          return await this.getProfile(decodedID)
      }
 
-     //INHERITS PARENT (ACCOUNT) METHOD
-     static async accountAuth(token) {
-          /*
-               EXPECTED PARAMETER RAW AUTHORIZATION (JWT) TOKEN
-          */
-          return await Profile.decodeToken(token)
-     }
-
-     static async getIdentifiers(id) {
+     static async getProfile(id) {
           /*
                EXPECTED PARAMETER VERIFIED JWT ID
           */
-          return await Profile.getAccountIdentifiers(id)
+
+          return await ProfileModel.findOne({ account: id })
      }
 }

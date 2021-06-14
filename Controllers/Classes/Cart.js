@@ -1,40 +1,34 @@
 const Inventory = require('./Inventory')
-
+const CartModel = require('../../Models/Schemas/CartSchema')
 module.exports = class Cart extends Inventory {
      // STATIC METHODS!!!
      static async addToCart(cart) {
-          let itemIds = cart.items.map((k) => this.getObjectID(k._id))
+          /* 
+               CART EXPECTED PROP:
+               {token, _id, quantity}
+          */
 
-          const id = await this.decodeToken(cart.token)
+          const { token } = cart,
+               itemID = { _id: cart._id },
+               payload = { quantity: cart.quantity }
 
-          const account = await this.getAccountById(id)
+          const decoded = await this.decodeToken(token)
 
-          const items = await this.findByIds(itemIds)
+          const account = await this.getAccountById(decoded)
 
-          const updatedCart = await Promise.all(
-               items.map(async (k) => {
-                    const requested_items = cart.items.find((el) => {
-                         return this.getObjectID(el._id).equals(
-                              this.getObjectID(k._id)
-                         )
-                    })
+          delete cart.token
+          const db = await CartModel.create(payload)
 
-                    k.quantity -= requested_items.quantity
+          db.account = { ...account }
+          db.items = { ...itemID }
 
-                    //    k.quantity = 100
-                    await k.save()
+          return await db.save()
+     }
 
-                    return {
-                         _id: this.getObjectID(k._id),
-                         cart_quantity: requested_items.quantity,
-                    }
-               })
-          )
-
-          console.log(updatedCart)
-          account.cart.push(...updatedCart)
-          await account.save()
-
-          return await items
+     static async getCart(id) {
+          /* 
+               PARAMETER ID = ACCOUNT ID
+          */
+          return await CartModel.find().where('account', id).populate('items')
      }
 }

@@ -29,4 +29,18 @@ router.patch('/profile/update', async (req, res, next) => {
           next(error)
      }
 })
+
+router.get('/profile/auth', async (req, res, next) => {
+     try {
+          const rawToken = req.headers['authorization']
+
+          const decoded = await Profile.decodeToken(rawToken)
+
+          const profile = await Profile.getProfile(decoded)
+
+          res.status(200).json(profile)
+     } catch (error) {
+          next(error)
+     }
+})
 module.exports = router

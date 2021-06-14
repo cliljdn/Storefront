@@ -32,7 +32,7 @@ const schema = new Schema(
 
           onTransact: { type: Boolean, default: false },
 
-          item_owner: {
+          account: {
                type: mongoose.Schema.Types.ObjectId,
                ref: collectionNames.Accounts,
           },

@@ -1,6 +1,4 @@
-const bcrypt = require('bcrypt')
 const InventorySchema = require('../../Models/Schemas/InventorySchema')
-let password = bcrypt.hashSync('Password1', 10)
 
 let data = [
      {
@@ -34,13 +32,8 @@ let data = [
      },
 ]
 
-const ifExist = data.map((k) => k.item_name)
-
 exports.up = async () => {
      let exists = await InventorySchema.find()
-          .where('item_name')
-          .in(ifExist)
-          .exec()
 
      if (exists.length <= 0) {
           let inserted = await InventorySchema.insertMany(data)
