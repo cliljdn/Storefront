@@ -44,4 +44,6 @@ router.delete('/cart/remove', async (req, res, next) => {
      }
 })
 
+router.patch('/cart/update', async (req, res, next) => {})
+
 module.exports = router

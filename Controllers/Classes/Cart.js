@@ -29,7 +29,10 @@ module.exports = class Cart extends Inventory {
           /* 
                PARAMETER ID = ACCOUNT ID (CECODED JWT)
           */
-          return await CartModel.find().where('account', id).populate('items')
+          return await CartModel.find()
+               .where('account', id)
+               .where('checkout', false)
+               .populate('items')
      }
 
      static async removeCartItems(obj) {
@@ -52,5 +55,19 @@ module.exports = class Cart extends Inventory {
           })
      }
 
-     static async updateCartItem(obj) {}
+     static async updateCartItem(obj) {
+          /* 
+               EXPECTED PROP OF PARAMETER:
+               token, _id, quantity, checkout
+          
+          */
+          Object.keys(obj).forEach((key) => obj[key] === '' && delete obj[key])
+          await this.decodeToken(obj.token)
+
+          const objID = this.getObjectID(obj._id)
+
+          const updated = await CartModel.updateOne({ _id: objID }, obj, {
+               new: true,
+          })
+     }
 }
