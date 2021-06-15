@@ -27,8 +27,30 @@ module.exports = class Cart extends Inventory {
 
      static async getCart(id) {
           /* 
-               PARAMETER ID = ACCOUNT ID
+               PARAMETER ID = ACCOUNT ID (CECODED JWT)
           */
           return await CartModel.find().where('account', id).populate('items')
      }
+
+     static async removeCartItems(obj) {
+          /* 
+               EXPECTED PARAMETER:
+               {
+                    ids: Array,
+                    token: jwt raw token
+
+               }
+          
+          */
+
+          await this.decodeToken(obj.token)
+
+          return await CartModel.deleteMany({
+               _id: {
+                    $in: obj.ids,
+               },
+          })
+     }
+
+     static async updateCartItem(obj) {}
 }

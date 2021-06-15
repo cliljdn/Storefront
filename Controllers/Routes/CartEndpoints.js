@@ -30,4 +30,18 @@ router.get('/cart/list', async (req, res, next) => {
      }
 })
 
+router.delete('/cart/remove', async (req, res, next) => {
+     try {
+          const rawToken = await req.headers['authorization']
+
+          req.body.token = rawToken
+
+          const d = await Cart.removeCartItems(req.body)
+
+          res.status(200).json(d)
+     } catch (error) {
+          next(error)
+     }
+})
+
 module.exports = router
