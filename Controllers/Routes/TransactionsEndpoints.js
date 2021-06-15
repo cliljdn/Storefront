@@ -14,8 +14,15 @@ const router = express.Router()
 
 */
 
-router.get('/transactions/sales', async (req, res, next) => {
+router.get('/transactions/history', async (req, res, next) => {
      try {
+          const rawToken = req.headers['authorization']
+
+          const id = await Transactions.decodeToken(rawToken)
+
+          const d = await Transactions.userTransactions(id)
+
+          res.status(200).json(d)
      } catch (error) {
           next(error)
      }

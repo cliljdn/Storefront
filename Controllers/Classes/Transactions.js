@@ -9,7 +9,17 @@ module.exports = class Transactions extends Cart {
           return TransactionModel
      }
 
-     static async userTransactions() {}
+     static async userTransactions(id) {
+          return await this.trnsModel.where('buyer', id).populate({
+               path: 'item',
+               populate: {
+                    path: 'items',
+                    populate: {
+                         path: 'account',
+                    },
+               },
+          })
+     }
 
      static async checkout(obj) {
           /* 
