@@ -1,13 +1,16 @@
-const jwt = require('../../helpers/token/jwt')
 const AccountModel = require('../../Models/Schemas/AccountSchema')
 const InventoryModel = require('../../Models/Schemas/InventorySchema')
 const Account = require('./Account')
-const mongoose = require('mongoose')
 const query = {}
 module.exports = class Inventory extends Account {
      /* 
           
    */
+
+     static get inventoryModel() {
+          return InventoryModel
+     }
+
      static async getAccountInventories(obj) {
           const id = await this.decodeToken(obj.token)
 

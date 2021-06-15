@@ -4,6 +4,10 @@ const jwt = require('../../helpers/token/jwt')
 const mongoose = require('mongoose')
 
 module.exports = class Account {
+     static get accountModel() {
+          return AccountModel
+     }
+
      //static methods
      static async insertAccount(obj) {
           const ifExist = await AccountModel.findOne({ email: obj.email })

@@ -3,10 +3,11 @@ const router = express.Router()
 
 /* 
 
-    EXPECTED BODY:
-     item_name, item_descripton, quantity, itemType, image (optional),
-     
-     expiredDate (optional), price, onTransact (boolean true === displays on sales),
+    EXPECTED BODY: 
+     payment, change, quantity, buyer (id), item(array of item ids), seller (account id of seller)
+
+
+
 
      item_owner
 

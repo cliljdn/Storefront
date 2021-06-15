@@ -1,6 +1,10 @@
 const Inventory = require('./Inventory')
 const CartModel = require('../../Models/Schemas/CartSchema')
 module.exports = class Cart extends Inventory {
+     static get cartModel() {
+          return CartModel
+     }
+
      // STATIC METHODS!!!
      static async addToCart(cart) {
           /* 
@@ -25,13 +29,29 @@ module.exports = class Cart extends Inventory {
           return await db.save()
      }
 
-     static async getCart(id) {
+     static async getUserCart(id) {
           /* 
                PARAMETER ID = ACCOUNT ID (CECODED JWT)
           */
           return await CartModel.find()
                .where('account', id)
                .where('checkout', false)
+               .populate('items')
+     }
+
+     static async getCartItem(id) {
+          return await CartModel.findById(id)
+     }
+
+     static async getCartByIds(ids) {
+          /* 
+               EXPECTED PARAMETER:
+               ids[]
+          */
+
+          return await this.cartModel
+               .find({ _id: { $in: ids } })
+               .select('-createdAt -updatedAt')
                .populate('items')
      }
 
@@ -58,7 +78,7 @@ module.exports = class Cart extends Inventory {
      static async updateCartItem(obj) {
           /* 
                EXPECTED PROP OF PARAMETER:
-               token, _id, quantity, checkout
+               token, _id, quantity
           
           */
           Object.keys(obj).forEach((key) => obj[key] === '' && delete obj[key])

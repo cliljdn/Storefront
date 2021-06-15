@@ -1,9 +1,11 @@
-const AccountSchema = require('../../Models/Schemas/AccountSchema')
 const ProfileModel = require('../../Models/Schemas/ProfileSchema')
 const Account = require('./Account')
 
 module.exports = class Profile extends Account {
      //STATIC METHODS
+     static get profileModel() {
+          return ProfileModel
+     }
 
      static async createProfile(obj, token) {
           const decodedID = await this.decodeToken(token)

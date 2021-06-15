@@ -22,7 +22,7 @@ router.get('/cart/list', async (req, res, next) => {
 
           const decoded = await Cart.decodeToken(rawToken)
 
-          const cart = await Cart.getCart(decoded)
+          const cart = await Cart.getUserCart(decoded)
 
           res.status(200).json(cart)
      } catch (error) {
@@ -44,6 +44,14 @@ router.delete('/cart/remove', async (req, res, next) => {
      }
 })
 
-router.patch('/cart/update', async (req, res, next) => {})
+router.patch('/cart/update', async (req, res, next) => {
+     try {
+          const d = await Cart.getCartByIds(req.body.ids)
+
+          res.status(200).json(d)
+     } catch (error) {
+          next(error)
+     }
+})
 
 module.exports = router
