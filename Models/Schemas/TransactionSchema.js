@@ -14,10 +14,9 @@ const schema = new Schema(
                default: 0,
           },
 
-          quantity: {
+          total: {
                type: Number,
                default: 0,
-               require: true,
           },
 
           buyer: {
@@ -28,14 +27,16 @@ const schema = new Schema(
           item: [
                {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: collectionNames.Inventory,
+                    ref: collectionNames.Cart,
                },
           ],
 
-          seller: {
-               type: mongoose.Schema.Types.ObjectId,
-               ref: collectionNames.Accounts,
-          },
+          seller: [
+               {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: collectionNames.Accounts,
+               },
+          ],
      },
 
      {

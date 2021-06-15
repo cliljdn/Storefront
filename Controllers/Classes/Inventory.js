@@ -2,6 +2,7 @@ const AccountModel = require('../../Models/Schemas/AccountSchema')
 const InventoryModel = require('../../Models/Schemas/InventorySchema')
 const Account = require('./Account')
 const query = {}
+
 module.exports = class Inventory extends Account {
      /* 
           
@@ -23,7 +24,7 @@ module.exports = class Inventory extends Account {
                query['item_name'] = { $regex: '.*' + obj.search + '.*' }
           }
 
-          return await InventoryModel.find(query).where('item_owner', id).lean()
+          return await InventoryModel.find(query).where('account', id).lean()
      }
 
      static async getSales() {
@@ -34,7 +35,7 @@ module.exports = class Inventory extends Account {
           }
      }
 
-     static async findByIds(ids) {
+     static async InventoryfindByIds(ids) {
           try {
                return await InventoryModel.find({ _id: { $in: ids } })
           } catch (error) {
@@ -42,7 +43,7 @@ module.exports = class Inventory extends Account {
           }
      }
 
-     static async findById(id) {
+     static async InventoryfindById(id) {
           try {
                return await InventoryModel.find({ _id: id })
           } catch (error) {
@@ -63,13 +64,10 @@ module.exports = class Inventory extends Account {
 
           const inventory = await InventoryModel.create(obj)
 
-          account.inventories.push(inventory)
-          const accOk = await account.save()
-
-          inventory.item_owner = { ...account }
+          inventory.account = { ...account }
           const invOk = await inventory.save()
 
-          return accOk && invOk ? true : false
+          return invOk ? true : false
      }
 
      /* 

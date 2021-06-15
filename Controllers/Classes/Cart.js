@@ -31,7 +31,7 @@ module.exports = class Cart extends Inventory {
 
      static async getUserCart(id) {
           /* 
-               PARAMETER ID = ACCOUNT ID (CECODED JWT)
+               PARAMETER ID = ACCOUNT ID (DECODED JWT)
           */
           return await CartModel.find()
                .where('account', id)
@@ -51,7 +51,6 @@ module.exports = class Cart extends Inventory {
 
           return await this.cartModel
                .find({ _id: { $in: ids } })
-               .select('-createdAt -updatedAt')
                .populate('items')
      }
 

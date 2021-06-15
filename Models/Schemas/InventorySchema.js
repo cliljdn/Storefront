@@ -32,6 +32,9 @@ const schema = new Schema(
 
           onTransact: { type: Boolean, default: false },
 
+          /* 
+          ACCOUNT = ITEM OWNER ID
+          */
           account: {
                type: mongoose.Schema.Types.ObjectId,
                ref: collectionNames.Accounts,

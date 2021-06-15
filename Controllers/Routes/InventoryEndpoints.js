@@ -40,7 +40,7 @@ router.get('/inventory/items', async (req, res, next) => {
           const rawToken = req.headers['authorization']
           req.query.token = rawToken
 
-          const items = await Inventory.getInventory(req.query)
+          const items = await Inventory.getAccountInventories(req.query)
 
           res.status(200).json(items)
      } catch (error) {

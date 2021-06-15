@@ -1,4 +1,5 @@
 const express = require('express')
+const Transactions = require('../Classes/Transactions')
 const router = express.Router()
 
 /* 
@@ -15,6 +16,20 @@ const router = express.Router()
 
 router.get('/transactions/sales', async (req, res, next) => {
      try {
+     } catch (error) {
+          next(error)
+     }
+})
+
+router.post('/transactions/checkout', async (req, res, next) => {
+     try {
+          const rawToken = req.headers['authorization']
+
+          req.body.token = rawToken
+
+          const d = await Transactions.checkout(req.body)
+
+          res.status(200).json(d)
      } catch (error) {
           next(error)
      }

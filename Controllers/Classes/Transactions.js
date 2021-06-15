@@ -12,11 +12,39 @@ module.exports = class Transactions extends Cart {
      static async checkout(obj) {
           /* 
                EXPECTED PROP OF OBJ
-               token, payment, change, quantity,  buyer (id), cart[] (ids of cart), seller (id)
+               token, payment, quantity,cart[] (ids of cart), seller (id)
           */
 
-          await this.decodeToken(obj.token)
+          const accID = await this.decodeToken(obj.token)
 
-          return await this.getUserCart
+          const account = await this.getAccountById(accID)
+
+          const cart = await this.getCartByIds(obj.cart)
+
+          // total can be done in the frontend before sending the payload
+          const total = cart.reduce((acc, t) => acc + t.items.price, 0)
+
+          console.log(total)
+          const change = obj.payment - total
+
+          const transactions = await this.trnsModel.create({
+               payment: obj.payment,
+               total: total,
+               change: change,
+          })
+
+          await Promise.all(
+               cart.map(async (k) => {
+                    k.quantity - k.items.quantity
+
+                    transactions.item.push(k._id)
+                    transactions.seller.push(k.items.account)
+                    await k.items.save()
+               })
+          )
+
+          transactions.buyer = { ...account }
+
+          return await transactions.save()
      }
 }
