@@ -10,26 +10,36 @@ module.exports = class Transactions extends Cart {
      }
 
      static async userTransactions(id) {
-          return await this.trnsModel.where('buyer', id).populate({
-               path: 'item',
-               populate: {
-                    path: 'items',
+          const profile = await this.getProfile(id)
+          console.log(profile)
+          return await this.trnsModel
+               .where('buyer', profile._id)
+               .populate({
+                    path: 'item',
                     populate: {
-                         path: 'account',
+                         path: 'items',
+                         populate: {
+                              path: 'owner',
+                         },
                     },
-               },
-          })
+               })
+               .populate({
+                    path: 'item',
+                    populate: {
+                         path: 'customer',
+                    },
+               })
      }
 
      static async checkout(obj) {
           /* 
                EXPECTED PROP OF OBJ
-               token, payment, quantity,cart[] (ids of cart), seller[] (ids)
+               token, payment,cart[] (ids of cart), seller[] (ids)
           */
 
           const accID = await this.decodeToken(obj.token)
 
-          const account = await this.getAccountById(accID)
+          const profile = await this.getProfile(accID)
 
           const cart = await this.getCartByIds(obj.cart)
 
@@ -44,14 +54,18 @@ module.exports = class Transactions extends Cart {
                change: change,
           })
 
-          const itemInfo = await Promise.all(
+          await Promise.all(
                cart.map(async (k) => {
+                    k.items.quantity = k.items.quantity - k.quantity
+
                     transactions.item.push(k._id)
-                    transactions.seller.push(k.items.account)
+                    transactions.seller.push(k.items.owner)
 
                     k.checkout = true
 
                     await k.save()
+
+                    await k.items.save()
 
                     return {
                          _id: k.items.id,
@@ -60,22 +74,7 @@ module.exports = class Transactions extends Cart {
                })
           )
 
-          const inventories = await this.InventoryfindByIds(
-               itemInfo.map((k) => k._id)
-          )
-
-          inventories.map(async (k) => {
-               const cart = itemInfo.find((el) =>
-                    this.getObjectID(el._id).equals(this.getObjectID(k._id))
-               )
-
-               k.quantity = k.quantity - cart.quantity
-
-               console.log(k.quantity)
-               await k.save()
-          })
-
-          transactions.buyer = { ...account }
+          transactions.buyer = { ...profile }
 
           return await transactions.save()
      }

@@ -35,9 +35,9 @@ const schema = new Schema(
           /* 
           ACCOUNT = ITEM OWNER ID
           */
-          account: {
+          owner: {
                type: mongoose.Schema.Types.ObjectId,
-               ref: collectionNames.Accounts,
+               ref: collectionNames.Profile,
           },
      },
 

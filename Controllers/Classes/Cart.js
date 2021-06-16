@@ -1,6 +1,6 @@
-const Inventory = require('./Inventory')
+const Profile = require('./Profile')
 const CartModel = require('../../Models/Schemas/CartSchema')
-module.exports = class Cart extends Inventory {
+module.exports = class Cart extends Profile {
      static get cartModel() {
           return CartModel
      }
@@ -18,12 +18,12 @@ module.exports = class Cart extends Inventory {
 
           const decoded = await this.decodeToken(token)
 
-          const account = await this.getAccountById(decoded)
+          const profile = await this.getProfile(decoded)
 
           delete cart.token
           const db = await CartModel.create(payload)
 
-          db.account = { ...account }
+          db.customer = { ...profile }
           db.items = { ...itemID }
 
           return await db.save()
@@ -31,10 +31,10 @@ module.exports = class Cart extends Inventory {
 
      static async getUserCart(id) {
           /* 
-               PARAMETER ID = ACCOUNT ID (DECODED JWT)
+               PARAMETER ID = PROFILE ID (DECODED JWT)
           */
           return await CartModel.find()
-               .where('account', id)
+               .where('customer', id)
                .where('checkout', false)
                .populate('items')
      }

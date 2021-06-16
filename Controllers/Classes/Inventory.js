@@ -1,9 +1,9 @@
 const AccountModel = require('../../Models/Schemas/AccountSchema')
 const InventoryModel = require('../../Models/Schemas/InventorySchema')
-const Account = require('./Account')
+const Profile = require('./Profile')
 const query = {}
 
-module.exports = class Inventory extends Account {
+module.exports = class Inventory extends Profile {
      /* 
           
    */
@@ -15,6 +15,8 @@ module.exports = class Inventory extends Account {
      static async getAccountInventories(obj) {
           const id = await this.decodeToken(obj.token)
 
+          const profile = await this.getProfile(id)
+
           delete obj.token
           if (obj.itemType) {
                query['itemType'] = obj.itemType
@@ -24,7 +26,9 @@ module.exports = class Inventory extends Account {
                query['item_name'] = { $regex: '.*' + obj.search + '.*' }
           }
 
-          return await InventoryModel.find(query).where('account', id).lean()
+          return await InventoryModel.find(query)
+               .where('owner', profile._id)
+               .lean()
      }
 
      static async getSales() {
@@ -60,11 +64,11 @@ module.exports = class Inventory extends Account {
 
           const objectID = this.getObjectID(decodedToken)
 
-          const account = await AccountModel.findById(objectID)
+          const profile = await this.getProfile(objectID)
 
           const inventory = await InventoryModel.create(obj)
 
-          inventory.account = { ...account }
+          inventory.owner = { ...profile }
           const invOk = await inventory.save()
 
           return invOk ? true : false

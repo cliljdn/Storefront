@@ -21,7 +21,7 @@ const schema = new Schema(
 
           buyer: {
                type: mongoose.Schema.Types.ObjectId,
-               ref: collectionNames.Accounts,
+               ref: collectionNames.Profile,
           },
 
           item: [
@@ -34,7 +34,7 @@ const schema = new Schema(
           seller: [
                {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: collectionNames.Accounts,
+                    ref: collectionNames.Profile,
                },
           ],
      },

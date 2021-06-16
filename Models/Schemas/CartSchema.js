@@ -14,9 +14,9 @@ const schema = new Schema(
                default: false,
           },
 
-          account: {
+          customer: {
                type: mongoose.Schema.Types.ObjectId,
-               ref: collectionNames.Accounts,
+               ref: collectionNames.Profile,
           },
 
           items: {

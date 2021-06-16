@@ -22,7 +22,9 @@ router.get('/cart/list', async (req, res, next) => {
 
           const decoded = await Cart.decodeToken(rawToken)
 
-          const cart = await Cart.getUserCart(decoded)
+          const profile = await Cart.getProfile(decoded)
+
+          const cart = await Cart.getUserCart(profile._id)
 
           res.status(200).json(cart)
      } catch (error) {
